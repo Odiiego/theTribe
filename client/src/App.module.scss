@@ -107,7 +107,78 @@
     'a30 .   .   .   .   .   .   .   a18'
     'a29 .   .   .   .   .   .   .   a19'
     'a28 a27 a26 a25 a24 a23 a22 a21 a20';
+  & > .casa:nth-child(4) {
+    border-radius: 2rem 0 0 0;
+  }
+  & > .casa:nth-child(12) {
+    border-radius: 0 2rem 0 0;
+  }
+  & > .casa:nth-child(20) {
+    border-radius: 0 0 2rem 0;
+  }
+  & > .casa:nth-child(28) {
+    border-radius: 0 0 0 2rem;
+  }
+}
 
+.pica {
+  gap: 0.2rem;
+  grid-template-areas:
+    'a3  a4  a5  a6   .   .   .   .   .    .   .'
+    'a2  .   .   a7   .   .   .   .   .    .   .'
+    'a1  .   .   a8   a31 a30 a29 a28 a27  .   .'
+    '.   a10 a9  .    .   .   .   .   a24  a25 a26'
+    'a11 .   .   a18  a19 a20 a21 a22 a23  .   .'
+    'a12 .   .   a17  .   .   .   .   .    .   .'
+    'a13 a14 a15 a16  .   .   .   .   .    .   .';
+  & > .casa:nth-child(1) {
+    border-radius: 0 0 2rem 2rem;
+  }
+  & > .casa:nth-child(3) {
+    border-radius: 2rem 0 0 0;
+  }
+  & > .casa:nth-child(6) {
+    border-radius: 0 2rem 0 0;
+  }
+  & > .casa:nth-child(8) {
+    border-radius: 0 0 0 2rem;
+  }
+  & > .casa:nth-child(9) {
+    border-radius: 1.5rem;
+  }
+  & > .casa:nth-child(10) {
+    border-radius: 1.5rem;
+  }
+  & > .casa:nth-child(11) {
+    border-radius: 2rem 2rem 0 0;
+  }
+  & > .casa:nth-child(13) {
+    border-radius: 0 0 0 2rem;
+  }
+  & > .casa:nth-child(16) {
+    border-radius: 0 0 2rem 0;
+  }
+  & > .casa:nth-child(18) {
+    border-radius: 2rem 0 0 0;
+  }
+  & > .casa:nth-child(23) {
+    border-radius: 0 0 2rem 0;
+  }
+
+  & > .casa:nth-child(25) {
+    transform: translateX(2rem);
+  }
+  & > .casa:nth-child(26) {
+    transform: translateX(2.5rem);
+  }
+
+  & > .casa:nth-child(27) {
+    border-radius: 0 2rem 0 0;
+  }
+}
+
+// registra a grid-area
+.tabuleiro {
   & > .casa:nth-child(1) {
     grid-area: a1;
   }
@@ -119,7 +190,6 @@
   }
   & > .casa:nth-child(4) {
     grid-area: a4;
-    border-radius: 2rem 0 0 0;
   }
   & > .casa:nth-child(5) {
     grid-area: a5;
@@ -144,7 +214,6 @@
   }
   & > .casa:nth-child(12) {
     grid-area: a12;
-    border-radius: 0 2rem 0 0;
   }
   & > .casa:nth-child(13) {
     grid-area: a13;
@@ -169,7 +238,6 @@
   }
   & > .casa:nth-child(20) {
     grid-area: a20;
-    border-radius: 0 0 2rem 0;
   }
   & > .casa:nth-child(21) {
     grid-area: a21;
@@ -194,7 +262,6 @@
   }
   & > .casa:nth-child(28) {
     grid-area: a28;
-    border-radius: 0 0 0 2rem;
   }
   & > .casa:nth-child(29) {
     grid-area: a29;
