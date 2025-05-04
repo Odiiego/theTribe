@@ -11,60 +11,75 @@
   height: 100vh;
   width: 100vw;
 
-  .deck {
-    width: 10rem;
-    height: 4.75rem;
-    transform: translateX(5rem);
-    font-size: 3.5rem;
-    background-color: black;
-    color: white;
-    border-radius: 0.75rem;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-  .coin {
-    width: 7rem;
-    height: 4.75rem;
-    font-size: 2rem;
-    text-align: center;
-    transform: translateX(5rem);
-  }
-
-  .tabuleiro {
+  .mesa {
     display: grid;
-    position: relative;
-    width: fit-content;
+    gap: 0.5rem 1rem;
+    grid-template-areas:
+      'c . t t t'
+      'd . t t t '
+      '. . t t t ';
 
-    .card {
-      position: absolute;
-      align-self: center;
+    .deck {
+      grid-area: d;
+      height: 225px;
+      width: 125px;
+      background-color: black;
+      writing-mode: vertical-rl;
+      font-size: 3rem;
+      color: white;
+      border-radius: 0.75rem;
+      grid-area: d;
+      &:hover {
+        cursor: pointer;
+      }
     }
-
-    .casa {
-      display: flex;
-      flex-direction: column;
+    .coin {
+      margin: 0 auto;
+      grid-area: c;
+      border-radius: 100%;
+      border: 5px solid goldenrod;
       width: 75px;
       height: 75px;
-      border: 1px solid black;
-      word-break: break-all;
+      font-size: 2rem;
       text-align: center;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      overflow: hidden;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
 
-      span {
-        flex: 1;
+    .tabuleiro {
+      display: grid;
+      position: relative;
+      width: fit-content;
+      grid-area: t;
+
+      .casa {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: 900;
+        flex-direction: column;
+        width: 75px;
+        height: 75px;
+        border: 1px solid black;
+        word-break: break-all;
+        text-align: center;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow: hidden;
 
-        &:hover {
-          cursor: pointer;
-          color: white;
+        span {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          font-weight: 900;
+
+          &:hover {
+            cursor: pointer;
+            color: white;
+          }
         }
       }
     }

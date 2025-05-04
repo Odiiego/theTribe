@@ -1,7 +1,7 @@
 import createBoard from './utils/tabuleiro.js';
 import styles from './App.module.scss';
 import React from 'react';
-import createPlayer from './utils/player.js';
+import { createPlayer, updatePlayer } from './utils/player.js';
 import getCardByTheme from './utils/deck.js';
 
 const temas = [
@@ -14,61 +14,71 @@ const temas = [
 ] as const;
 
 export default function App() {
-  const [tabuleiro, setTabuleiro] = React.useState(createBoard(31, 13));
+  const [tabuleiro] = React.useState(createBoard(31, 13));
   const [jogador, setJogador] = React.useState(createPlayer());
   const [pergunta, setPergunta] = React.useState<string[] | undefined>(
     undefined,
   );
-  const coinRef = React.useRef(null);
-
-  // function handleMove() {
-  //   const coinValue = Number(coinRef.current?.value);
-  //   if (!coinValue) return;
-  //   const casaObjetivoIndex = jogador + coinValue - 1;
-  //   // const themes = tabuleiro.casas[casaObjetivoIndex].theme.map(     ISSO VAI SERVIR
-  //   //   (tema) => temas[tema],                                         PARA QUE O JOGADOR
-  //   // );                                                               POSSA ESCOLHER O TEMA
-  //   const card: ICard | undefined = baralho.shift();
-  //   if (!card) return;
-  //   const indexPergunta = tabuleiro.casas[casaObjetivoIndex].theme[0];
-  //   const [pergunta, resposta] = Object.entries(card)[indexPergunta] || [];
-  //   console.log(pergunta, resposta);
-  // }
+  const dialogRef = React.useRef<HTMLDialogElement>(null);
+  const coinRef = React.useRef<HTMLInputElement>(null);
 
   function chooseTile() {
     const moeda = Number(coinRef.current?.value);
     const destino = jogador.planejarMovimento(moeda);
 
     setPergunta(getCardByTheme(temas[tabuleiro.casas[destino!].theme[0]]));
+    dialogRef.current?.showModal();
   }
 
-  // FALTA A LÓGICA DE RESPONDER UMA PERGUNTA E AVANÇAR POSTERIORMENTE
+  function acertarPergunta() {
+    if (!pergunta) return;
+    jogador.responderPergunta(pergunta[1], 'resposta');
+    dialogRef.current?.close();
+    jogador.confirmarMovimento();
+    setJogador(updatePlayer(jogador));
+  }
+  function errarPergunta() {
+    if (!pergunta) return undefined;
+    jogador.responderPergunta(pergunta[1], '');
+    dialogRef.current?.close();
+    jogador.confirmarMovimento();
+    setJogador(updatePlayer(jogador));
+  }
 
   return (
     <div className={styles.container}>
-      <input
-        ref={coinRef}
-        className={styles.coin}
-        placeholder="Moeda"
-        type="number"
-        name="coin"
-        id="coin"
-      />
-      <button onClick={chooseTile} className={styles.deck}>
-        Move
-      </button>
+      <>
+        <dialog className={styles.dialog} ref={dialogRef}>
+          <h2>{pergunta ? pergunta[0] : 'titulo'}</h2>
+          <button onClick={acertarPergunta}> Acertar</button>
+          <button onClick={errarPergunta}>Errar</button>
+        </dialog>
+      </>
+      <div className={styles.mesa}>
+        <input
+          ref={coinRef}
+          className={styles.coin}
+          placeholder=""
+          type="number"
+          name="coin"
+          id="coin"
+        />
+        <button onClick={chooseTile} className={styles.deck}>
+          Deck
+        </button>
 
-      <div className={`${styles.tabuleiro} ${styles.quadrado}`}>
-        {tabuleiro.casas.map((casa, n) => (
-          <div key={n} className={styles.casa}>
-            {casa.theme.map((theme) => (
-              <span key={theme} className={styles[temas[theme]]}>
-                {temas[theme]}
-                {casa.hasPowerUp ? '*' : ''}
-              </span>
-            ))}
-          </div>
-        ))}
+        <div className={`${styles.tabuleiro} ${styles.quadrado}`}>
+          {tabuleiro.casas.map((casa, n) => (
+            <div key={n} className={styles.casa}>
+              {casa.theme.map((theme) => (
+                <span key={theme} className={styles[temas[theme]]}>
+                  {jogador.posicao == n ? '🐭' : temas[theme]}
+                  {casa.hasPowerUp ? '⭐' : ''}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

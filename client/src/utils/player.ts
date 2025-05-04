@@ -1,13 +1,20 @@
 class Moeda {
   moedas: Record<number, number>;
-  constructor() {
-    this.moedas = {
-      1: 1,
-      2: 1,
-      3: 1,
-      4: 1,
-      5: 1,
-    };
+
+  constructor(moeda?: Moeda | Partial<Moeda>) {
+    if (moeda instanceof Moeda) {
+      this.moedas = { ...moeda.moedas };
+    } else if (moeda?.moedas) {
+      this.moedas = { ...moeda.moedas };
+    } else {
+      this.moedas = {
+        1: 1,
+        2: 1,
+        3: 1,
+        4: 1,
+        5: 1,
+      };
+    }
   }
 
   adicionar(valor: number, quantidade: number = 1) {
@@ -18,7 +25,7 @@ class Moeda {
     if (this.moedas[valor] >= quantidade) {
       this.moedas[valor] -= quantidade;
     }
-    if (quantidade == 1) return valor;
+    if (quantidade === 1) return valor;
   }
 
   adicionarTodas() {
@@ -33,41 +40,43 @@ class Jogador {
   posicao: number;
   moedas: Moeda;
   respostaCorreta: boolean;
-  movimentoPlanejado: number | null;
+  movimentoPlanejado: number | undefined;
 
-  constructor() {
-    this.counter = 0;
-    this.posicao = 0;
-    this.moedas = new Moeda();
-    this.respostaCorreta = false;
-    this.movimentoPlanejado = null;
+  constructor(jogador?: Partial<Jogador>) {
+    this.counter = jogador?.counter ?? 0;
+    this.posicao = jogador?.posicao ?? -1;
+    this.moedas = jogador?.moedas ? new Moeda(jogador.moedas) : new Moeda();
+    this.respostaCorreta = jogador?.respostaCorreta ?? false;
+    this.movimentoPlanejado = jogador?.movimentoPlanejado;
   }
 
   planejarMovimento(valorDaMoeda: number): number | null {
-    this.movimentoPlanejado =
-      this.posicao + this.moedas.remover(valorDaMoeda)! - 1;
+    this.movimentoPlanejado = this.posicao + this.moedas.remover(valorDaMoeda)!;
     return this.movimentoPlanejado;
   }
 
   responderPergunta(respostaPadrão: string, resposta: string) {
-    this.respostaCorreta = respostaPadrão == resposta;
+    this.respostaCorreta = respostaPadrão === resposta;
     return this.respostaCorreta;
   }
 
   confirmarMovimento() {
     this.counter += 1;
-    if (this.counter % 5 == 0) this.moedas.adicionarTodas();
-    if (!this.respostaCorreta || !this.movimentoPlanejado) return;
+    if (this.counter % 5 === 0) this.moedas.adicionarTodas();
+    if (!this.respostaCorreta || this.movimentoPlanejado === undefined) return;
 
-    this.posicao = this.movimentoPlanejado + 1;
+    this.posicao = this.movimentoPlanejado;
     this.counter += 1;
-    console.log(`Jogador avançou para a posição ${this.posicao}`);
 
     this.respostaCorreta = false;
-    this.movimentoPlanejado = null;
+    this.movimentoPlanejado = undefined;
   }
 }
 
-export default function createPlayer() {
+export function createPlayer() {
   return new Jogador();
+}
+
+export function updatePlayer(data: Partial<Jogador>) {
+  return new Jogador(data);
 }

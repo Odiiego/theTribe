@@ -1,12 +1,3 @@
-// const temas = [
-//   'S', // sociedade
-//   'V', // variedades
-//   'M', // mundo
-//   'EL', // esporte
-//   'CT', // cienciaTecnologia
-//   'AE', // artesEntretenimento
-// ];
-
 class Casa {
   counter: number;
   hasPlayer: boolean;
